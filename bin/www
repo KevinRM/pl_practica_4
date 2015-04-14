@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+//#!/usr/bin/env node
 
 /**
  * Module dependencies.
@@ -34,16 +34,16 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  var portl = parseInt(val, 10);
 
-  if (isNaN(port)) {
+  if (isNaN(portl)) {
     // named pipe
     return val;
   }
 
-  if (port >= 0) {
+  if (portl >= 0) {
     // port number
-    return port;
+    return portl;
   }
 
   return false;
