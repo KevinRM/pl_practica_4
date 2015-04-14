@@ -11,7 +11,7 @@ head
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
     |     
     script(src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js')  
-    script(src='/javascripts/main.coffee')
+    script(src='/javascripts/main.js', type='text/javascript')
     style(type='text/css').
       a{text-decoration:none;}
       a:link{color:white;}
@@ -46,7 +46,6 @@ head
               | Ver en 
               strong Github
         |         
-        br
         |         
         dt
           b
@@ -122,5 +121,5 @@ head
           }
           else { alert("Failed to load file"); }
           }
-    |     
+    hr     
     pre#OUTPUT.

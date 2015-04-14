@@ -6,7 +6,10 @@ body
   background-image: url(/images/fondo.jpg)
   background-attachment: fixed
   background-repeat: repeat
-
+#OUTPUT  {
+    background-color: white; 
+    width: 60%;
+}
 .menu dl
   &#primero
     float: left
