@@ -97,7 +97,10 @@ String::tokens = ->
     # comparison operator
     else if m = tokens.COMPARISONOPERATOR.bexec(this)
       result.push make("COMPARISON", getTok())
-    # single-character operator
+   #ADDOP
+    else if m = tokens.ADDOP.bexec(this)
+      result.push make("ADDOP", getTok())
+   # single-character operator
     else if m = tokens.ONECHAROPERATORS.bexec(this)
       result.push make(m[0], getTok())
     else

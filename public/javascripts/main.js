@@ -101,6 +101,8 @@
         result.push(make("STRING", getTok().replace(/^["']|["']$/g, "")));
       } else if (m = tokens.COMPARISONOPERATOR.bexec(this)) {
         result.push(make("COMPARISON", getTok()));
+      } else if (m = tokens.ADDOP.bexec(this)) {
+        result.push(make("ADDOP", getTok()));
       } else if (m = tokens.ONECHAROPERATORS.bexec(this)) {
         result.push(make(m[0], getTok()));
       } else {
