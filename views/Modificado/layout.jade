@@ -1,0 +1,52 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+      .contenido
+        p Cargue un ejemplo para analizar o seleccione un archivo para subirlo
+        |
+        div
+          textarea#original(autofocus='', cols='72', rows='5')
+        |
+        br
+        |
+        .loadfile
+          .btn_1
+            button#example1(type='button', onclick="dump('/examples/example1.txt');") Example 1
+          |
+          .btn_5
+            input#files(type='file')
+          |
+          .btn_parse
+            input#PARSE.mylink(value='Parse', type='button')
+          |
+          .btn_2
+            button#example2(type='button', onclick="dump('/examples/example2.txt');") Example 2
+          |
+          .btn_3
+            button#example3(type='button', onclick="dump('/examples/example3.txt');") Example 3
+          |
+          .btn_4
+            button#exampleerr(type='button', onclick="dump('/examples/example_err.txt');") Example_error
+        |
+        script(type='text/javascript').
+          function dump(fileName) {
+          $.get(fileName, function (data) {
+          $("#original").val(data);
+          });
+          };
+          document.getElementById('files').addEventListener('change', CopyMe, false);
+          function CopyMe(evt) {
+          var file = evt.target.files[0];
+          if (file) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+          original.innerHTML = e.target.result;
+          }
+          var c = reader.readAsText(file);
+          }
+          else { alert("Failed to load file"); }
+          }
+          block content
