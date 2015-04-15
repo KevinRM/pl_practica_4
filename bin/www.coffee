@@ -4,7 +4,7 @@
 # Module dependencies.
 ###
 
-app = require('../app.coffee')
+app = require('../app')
 debug = require('debug')('coffeepress:server')
 http = require('http')
 
