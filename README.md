@@ -3,7 +3,7 @@
 # Travis
 [![BuildStatus](https://travis-ci.org/KevinRM/pl_practica_4.svg)](https://travis-ci.org/KevinRM/pl_practica_4)
 
-# [Heroku](https://myparser.herokuapp.com//)
+# [Heroku](https://myparser.herokuapp.com)
 
 # Participantes
 - Sabato Ceruso
