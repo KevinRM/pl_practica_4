@@ -1,36 +1,104 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(charset='UTF-8')
+
+    link(rel='icon', type='image/jpg', href='/images/favicon.jpg')
+
+    link(rel='stylesheet', href='/stylesheets/estilo.css', type='text/css')
+
+    title Analizador
+
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
+
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js')
+    script(src='/javascripts/main.js', type='text/javascript')
+    style(type='text/css').
+      a{text-decoration:none;}
+      a:link{color:white;}
+      a:visited{color:white;}
+      a:hover{font-size:16; color:#0B0B61;}
+      block head
   body
+    #content
+      .menu
+        dl#primero
+          dt
+            b
+              a(href='https://kevinrm.github.io/') Inicio: P&aacute;gina Kevin
+
+          dt
+            b
+              a(href='http://alu0100764666.github.io/') Inicio: P&aacute;gina Sabato
+
+        dl#segundo
+
+          dt
+            b
+              a(href='')
+                strong Travis
+
+          dt
+            b
+              a(href='https://github.com/KevinRM/pl_practica_4') Ver en
+                strong Github
+
+
+          dt
+            b
+              a(href='http://en.wikipedia.org/wiki/Recursive_descent_parser') Wikipedia
+
+          dt
+            b
+              a(href='http://sass-lang.com/') Sass
+
+          dt
+            b
+              a(href='http://jade-lang.com/') Jade
+
+          dt
+            b
+              a(href='http://coffeescript.org/') CoffeeScript
+
+      .contenido_total
+        .titulo_practica
+          h1(align='center')
+            font(color='white') Analizador Descendente Predictivo Recursivo
+
+          hr
+
+        .descripcion
+          p
+            i
+              b
+                u Esta web contiene un ejemplo de Analizador Descendente Predictivo Recursivo
       .contenido
         p Cargue un ejemplo para analizar o seleccione un archivo para subirlo
-        |
+
         div
           textarea#original(autofocus='', cols='72', rows='5')
-        |
+
         br
-        |
+
         .loadfile
           .btn_1
             button#example1(type='button', onclick="dump('/examples/example1.txt');") Example 1
-          |
+
           .btn_5
             input#files(type='file')
-          |
+
           .btn_parse
             input#PARSE.mylink(value='Parse', type='button')
-          |
+
           .btn_2
             button#example2(type='button', onclick="dump('/examples/example2.txt');") Example 2
-          |
+
           .btn_3
             button#example3(type='button', onclick="dump('/examples/example3.txt');") Example 3
-          |
+
           .btn_4
             button#exampleerr(type='button', onclick="dump('/examples/example_err.txt');") Example_error
-        |
+
         script(type='text/javascript').
           function dump(fileName) {
           $.get(fileName, function (data) {
@@ -49,4 +117,7 @@ html
           }
           else { alert("Failed to load file"); }
           }
+
+          hr
+          pre#OUTPUT.
           block content

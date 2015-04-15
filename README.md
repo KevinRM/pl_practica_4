@@ -1,7 +1,7 @@
 # Práctica 4: [Analizador Descendente Predictivo Recursivo]()
 
 # Travis
-[![Build Status](https://travis-ci.org/KevinRM/pl_practica_4.svg)](https://travis-ci.org/KevinRM/pl_practica_4)
+[![BuildStatus](https://travis-ci.org/KevinRM/pl_practica_4.svg)](https://travis-ci.org/KevinRM/pl_practica_4)
 
 # [Heroku](https://.herokuapp.com/)
 
