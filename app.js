@@ -35,7 +35,6 @@
   app.use(express["static"](path.join(__dirname, 'public')));
 
   app.get('/', routes.index);
-
   app.use(function(req, res, next) {
     var err;
     err = new Error('Not Found');

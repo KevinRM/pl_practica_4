@@ -10,7 +10,7 @@
   /* GET home page. */
 
   module.exports = {
-    index: function(req, res) {
+      index:  function(req, res) {
       return res.render('index', {
         title: 'Predictive parser'
       });
