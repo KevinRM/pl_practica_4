@@ -1,9 +1,9 @@
-# Práctica 4: [Analizador Descendente Predictivo Recursivo]()
+# Práctica 4: [Analizador Descendente Predictivo Recursivo]
 
 # Travis
 [![BuildStatus](https://travis-ci.org/KevinRM/pl_practica_4.svg)](https://travis-ci.org/KevinRM/pl_practica_4)
 
-# [Heroku](https://.herokuapp.com/)
+# [Heroku](https://http://myparser.herokuapp.com//)
 
 # Participantes
 - Sabato Ceruso
