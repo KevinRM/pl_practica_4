@@ -51,7 +51,8 @@
       MULTIPLELINECOMMENT: /\/[*](.|\n)*?[*]\//g,
       COMPARISONOPERATOR: /[<>=!]=|[<>]/g,
       ADDOP: /[+-]/g,
-      ONECHAROPERATORS: /([*\/=()&|;:,{}[\]])/g
+      MULT: /[*\/]/g,
+      ONECHAROPERATORS: /([=()&|;:,{}[\]])/g
     };
     RESERVED_WORD = {
       p: "P",
@@ -103,6 +104,8 @@
         result.push(make("COMPARISON", getTok()));
       } else if (m = tokens.ADDOP.bexec(this)) {
         result.push(make("ADDOP", getTok()));
+      } else if (m = tokens.MULT.bexec(this)) {
+        result.push(make("MULT", getTok()));
       } else if (m = tokens.ONECHAROPERATORS.bexec(this)) {
         result.push(make(m[0], getTok()));
       } else {
@@ -206,18 +209,19 @@
       return result;
     };
     term = function() {
-      var result, right;
+      var result, right, type;
       result = factor();
-      if (lookahead && lookahead.type === "*") {
-        match("*");
+      if (lookahead && lookahead.type === "MULT") {
+        type = lookahead.value;
+        match("MULT");
         right = term();
-        result = {
-          type: "*",
+       	result = {
+          type: type,
           left: result,
           right: right
         };
       }
-      return result;
+			return result;
     };
     factor = function() {
       var result;
