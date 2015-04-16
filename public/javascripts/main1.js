@@ -52,7 +52,7 @@
       COMPARISONOPERATOR: /[<>=!]=|[<>]/g,
       ADDOP: /[+-]/g,
       MULT: /[*\/]/g,
-      ONECHAROPERATORS: /([=()&|;:,{}[\]\.])/g
+      ONECHAROPERATORS: /([=()&|;:,{}[\]])/g
     };
     RESERVED_WORD = {
       p: "P",
@@ -60,11 +60,6 @@
       then: "THEN",
 			begin: "BEGIN",
 			end: "END",
-			"while": "WHILE",
-			"do": "DO",
-			"const": "CONST",
-			"var": "VAR",
-			"procedure": "PROCEDURE",
 			call: "CALL"
     };
     make = function(type, value) {
@@ -136,77 +131,8 @@
       } else {
         throw ("Syntax Error. Expected " + t + " found '") + lookahead.value + "' near '" + input.substr(lookahead.from) + "'";
       }
-			return true;
     };
-
-		program = function() {
-			var result;
-			result = block();
-			match(".");
-			return result;
-
-		};
-		block = function() {
-			var result;
-			
-			result = {
-				CONST: [],
-				VARS: [],
-				PROCS: [],
-				STATM: undefined
-			}
-			if (lookahead && lookahead.type === "CONST") {
-				var node, left, right;
-				
-				match("CONST");
-				do {
-					left = {
-							type: "ID",
-							value: lookahead.value
-					};
-					match("ID");
-					match("=");
-					right = {
-						type: "NUM",
-						value: lookahead.value
-					};
-					match("NUM");
-					node = {
-						 type: "=",
-						 left: left,
-						 right: right
-					};
-					result.CONST.push(node);
-				} while(lookahead && lookahead.type === "," && match(",")); 
-				match(";");
-			}
-			if (lookahead && lookahead.type === "VAR") {
-				match("VAR");
-				do {
-					result.VARS.push(lookahead.value);
-					match("ID");
-				} while(lookahead && lookahead.type === "," && match(",")); 
-				match(";");
-			}
-			while (lookahead && lookahead.type === "PROCEDURE") {
-				var proc;
-				var porcid;
-				match("PROCEDURE");
-				procid = lookahead.value;
-				match("ID");
-				match(";");
-				proc = {
-					procID: procid,
-					block: block()
-				};
-				match(";");
-				
-				result.PROCS.push(proc);
-			}
-			result.STATM = statement();
-			return result;
-		};
-    /*statements = function() {
+    statements = function() {
       var result;
       result = [statement()];
       while (lookahead && lookahead.type === ";") {
@@ -218,7 +144,7 @@
       } else {
         return result;
       }
-    };*/
+    };
     statement = function() {
       var left, result, right;
       result = null;
@@ -253,26 +179,6 @@
           right: right
         };
       }
-			else if (lookahead && lookahead.type === "WHILE") {
-				match("WHILE");
-				left = condition();
-				match("DO");
-				right = statement();
-				result = {
-					type: "WHILE",
-					left: left,
-					right: right
-				};
-			}
-			else if (lookahead && lookahead.type === "BEGIN") {
-				match("BEGIN");
-				result = [statement()];
-				while (lookahead && lookahead.type === ";") {
-					match(";");
-					result.push(statement());
-				}
-				match("END");
-			}
 			else if (lookahead && lookahead.type === "CALL") {
 				match("CALL");
 				right = {
@@ -358,7 +264,7 @@
       }
       return result;
     };
-    tree = program(input);
+    tree = statements(input);
     if (lookahead != null) {
       throw "Syntax Error parsing statements. " + "Expected 'end of input' and found '" + input.substr(lookahead.from) + "'";
     }
