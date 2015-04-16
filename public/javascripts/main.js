@@ -124,7 +124,7 @@
   };
 
   parse = function(input) {
-    var condition, expression, factor, lookahead, match, statement, statements, term, tokens, tree;
+    var condition, expression, factor, lookahead, match, statement, statements, term, tokens, tree, program, block;
     tokens = input.tokens();
     lookahead = tokens.shift();
     match = function(t) {
@@ -190,7 +190,7 @@
 			}
 			while (lookahead && lookahead.type === "PROCEDURE") {
 				var proc;
-				var porcid;
+				var procid;
 				match("PROCEDURE");
 				procid = lookahead.value;
 				match("ID");

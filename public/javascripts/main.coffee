@@ -61,11 +61,19 @@
       COMPARISONOPERATOR: /[<>=!]=|[<>]/g
       ADDOP: /[+-]/g
       MULT: /[*\/]/g
-      ONECHAROPERATORS: /([=()&|;:,{}[\]])/g
+      ONECHAROPERATORS: /([=()&|;:,{}[\]\.])/g
     RESERVED_WORD =
       p: 'P'
       'if': 'IF'
       then: 'THEN'
+      begin: 'BEGIN'
+      end: 'END'
+      'while': 'WHILE'
+      'do': 'DO'
+      'const': 'CONST'
+      'var': 'VAR'
+      'procedure': 'PROCEDURE'
+      call: 'CALL'
 
     make = (type, value) ->
       {
@@ -128,6 +136,8 @@
     term = undefined
     tokens = undefined
     tree = undefined
+    program = undefined
+    block = undefined
     tokens = input.tokens()
     lookahead = tokens.shift()
 
@@ -138,18 +148,81 @@
           lookahead = null
       else
         throw 'Syntax Error. Expected ' + t + ' found \'' + lookahead.value + '\' near \'' + input.substr(lookahead.from) + '\''
-      return
+      true
 
-    statements = ->
+    program = ->
       result = undefined
-      result = [ statement() ]
-      while lookahead and lookahead.type == ';'
+      result = block()
+      match '.'
+      result
+
+    block = ->
+      result = undefined
+      result =
+        CONST: []
+        VARS: []
+        PROCS: []
+        STATM: undefined
+      if lookahead and lookahead.type == 'CONST'
+        node = undefined
+        left = undefined
+        right = undefined
+        match 'CONST'
+        loop
+          left =
+            type: 'ID'
+            value: lookahead.value
+          match 'ID'
+          match '='
+          right =
+            type: 'NUM'
+            value: lookahead.value
+          match 'NUM'
+          node =
+            type: '='
+            left: left
+            right: right
+          result.CONST.push node
+          unless lookahead and lookahead.type == ',' and match(',')
+            break
         match ';'
-        result.push statement()
-      if result.length == 1
-        result[0]
-      else
-        result
+      if lookahead and lookahead.type == 'VAR'
+        match 'VAR'
+        loop
+          result.VARS.push lookahead.value
+          match 'ID'
+          unless lookahead and lookahead.type == ',' and match(',')
+            break
+        match ';'
+      while lookahead and lookahead.type == 'PROCEDURE'
+        proc = undefined
+        procid = undefined
+        match 'PROCEDURE'
+        procid = lookahead.value
+        match 'ID'
+        match ';'
+        proc =
+          procID: procid
+          block: block()
+        match ';'
+        result.PROCS.push proc
+      result.STATM = statement()
+      result
+
+    ###statements = function() {
+      var result;
+      result = [statement()];
+      while (lookahead && lookahead.type === ";") {
+        match(";");
+        result.push(statement());
+      }
+      if (result.length === 1) {
+        return result[0];
+      } else {
+        return result;
+      }
+    };
+    ###
 
     statement = ->
       left = undefined
@@ -181,6 +254,31 @@
         result =
           type: 'IF'
           left: left
+          right: right
+      else if lookahead and lookahead.type == 'WHILE'
+        match 'WHILE'
+        left = condition()
+        match 'DO'
+        right = statement()
+        result =
+          type: 'WHILE'
+          left: left
+          right: right
+      else if lookahead and lookahead.type == 'BEGIN'
+        match 'BEGIN'
+        result = [ statement() ]
+        while lookahead and lookahead.type == ';'
+          match ';'
+          result.push statement()
+        match 'END'
+      else if lookahead and lookahead.type == 'CALL'
+        match 'CALL'
+        right =
+          type: 'ID'
+          value: lookahead.value
+        match 'ID'
+        result =
+          type: 'CALL'
           right: right
       else
         throw 'Syntax Error. Expected identifier but found ' + (if lookahead then lookahead.value else 'end of input') + ' near \'' + input.substr(lookahead.from) + '\''
@@ -252,7 +350,7 @@
         throw 'Syntax Error. Expected number or identifier or \'(\' but found ' + (if lookahead then lookahead.value else 'end of input') + ' near \'' + input.substr(lookahead.from) + '\''
       result
 
-    tree = statements(input)
+    tree = program(input)
     if lookahead != null
       throw 'Syntax Error parsing statements. ' + 'Expected \'end of input\' and found \'' + input.substr(lookahead.from) + '\''
     tree
